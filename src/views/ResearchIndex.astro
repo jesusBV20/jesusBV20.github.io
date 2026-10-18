@@ -46,7 +46,7 @@ const topics = (await entries("research", lang)).sort((a, b) => (a.data.order ??
                   <>
                     <span>·</span>
                     <Icon name="video" class="size-3.5" />
-                    {t.data.videos.length} {label("research.videos", lang).toLowerCase()}
+                    {`${t.data.videos.length} ${label("research.videos", lang).toLowerCase()}`}
                   </>
                 )}
               </p>
