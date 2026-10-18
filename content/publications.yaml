@@ -1,0 +1,158 @@
+# Publications. Everything that lists papers reads this file: the
+# Publications page, each Research topic, the front page and the CV.
+#
+# Four lists, same as the group site:
+#   preprint:    submitted, still under review   (year = year submitted)
+#   journal:     published in a journal
+#   conference:  published in conference proceedings
+#   technote:    on arXiv, not headed for a journal
+# Newest first within each list.
+#
+#   - title: "The title of the paper"                       # required
+#     authors: "A. Author, J. Bautista, HG de Marina"       # required
+#     venue: "IEEE Transactions on Automatic Control"       # required
+#     year: 2026
+#     doi: https://doi.org/10.1109/TAC.2025.123456          # the publisher record
+#     pdf: https://arxiv.org/pdf/2410.15921                 # an open full text
+#     topics: [source-seeking]       # folder names under content/research/
+#     featured: true                 # also shown on the front page
+#     image: images/publications/x.png
+#     abstract: "…"
+#     note: "Best paper award"       # short line in accent type
+#     links:                         # anything else: code, video, slides, data
+#       - { label: Code, href: https://github.com/… }
+#
+# You only need title, authors, venue and year. Then run
+#
+#     bun run publications:enrich
+#
+# and missing `doi` and `pdf` are looked up on OpenAlex (by title, checked
+# against your ORCID) and arXiv. It never overwrites anything you wrote.
+
+
+# Under review
+preprint:
+  - title: "Singularity-Free Guiding Vector Fields on SO(3) with Designer-Specified Progression Behavior"
+    authors: "J. Bautista, HG de Marina"
+    venue: "Submitted to Automatica"
+    year: 2026
+    doi: https://doi.org/10.48550/arxiv.2609.07269
+    pdf: https://arxiv.org/pdf/2609.07269
+    topics: [guiding-vector-fields, geometric-control, fixed-wing]
+    featured: true
+    image: images/publications/sf-gvf-so3.png
+    links:
+      - { label: Code, href: https://github.com/Swarm-Systems-Lab/gvf_so3 }
+    abstract: >-
+      This paper develops a singularity-free guiding vector field (SF-GVF) for path following on the special orthogonal group SO(3). First, we lift the Euclidean SF-GVF construction to SO(3), integrating the augmented-state approach with the intrinsic Lie-group geometry and obtaining a closed-form geometric guidance law whose integral curves converge to a designer-specified attitude path. The field is defined on a dense open subset of SO(3), excluding only the measure-zero antipodal set — a manifestation of the topological obstruction to continuous global stabilization on SO(3). The construction requires no per-step optimization and produces a control input intrinsically in mathfrakso(3) as body angular rates. Second, we formalize the progression behavior along the path as a designer-supplied function nu(xi), promoting the parametric speed from an implicitly resolved degree of freedom to a first-class design specification. In contrast to the Euclidean condition v = 0, which excludes vehicles with minimum-speed constraints, the corresponding condition omega = 0 on SO(3) is physically admissible for most platforms with active attitude control, making the progression behavior a design freedom structurally available on SO(3) but absent in the Euclidean setting. The framework's structural results are established under a bi-invariant Riemannian metric and hold uniformly across choices of path, progression, and Lyapunov gain. The framework is illustrated in simulation on self-intersecting paths under both constant and point-convergence progression behaviors.
+
+# Journal papers
+journal:
+  - title: "Fully distributed and resilient source seeking for robot swarms"
+    authors: "J. Bautista, A. Acuaviva, J. Hinojosa, W. Yao, J. Castellanos, HG de Marina"
+    venue: "IEEE Transactions on Automatic Control"
+    year: 2026
+    doi: https://doi.org/10.1109/tac.2026.3727211
+    pdf: https://arxiv.org/pdf/2410.15921
+    topics: [source-seeking]
+    featured: true
+    image: images/publications/ss.png
+    links:
+      - { label: Code, href: https://github.com/Swarm-Systems-Lab/source_seeking }
+    abstract: >-
+      Existing source-seeking algorithms for robot swarms typically require either direct gradient measurements or rigid geometric formations, limiting their flexibility and resilience to robot failures. We propose a fully distributed solution that overcomes these limitations by computing an ascending direction through local field measurements and distributed estimation of centroid-relative coordinates. The resulting architecture consists of three exponentially convergent algorithms operating in a slow-fast closed-loop system, enabling simultaneous estimation and motion control without central coordination. Our framework accommodates arbitrary swarm geometries and analyzes how the spatial distribution of robots affects gradient observability, robustness, and resilience to failures. We characterize optimal swarm shapes that guarantee alignment with the true gradient and show how shape morphing can maneuver the collective motion. The approach is developed for kinematic points in R^m and extended to 2D unicycles with constant speed. Simulations with large-scale swarms validate the methodology.
+  - title: "Leaderless Collective Motion in Affine Formation Control over the Complex Plane"
+    authors: "J. Bautista, E. Morella, L. Wang, HG de Marina"
+    venue: "IEEE Transactions on Network Systems"
+    year: 2026
+    doi: https://doi.org/10.1109/tcns.2026.3718812
+    pdf: http://arxiv.org/pdf/2604.05648v2
+    topics: [formation-control]
+    image: images/publications/i_fc_affine.png
+    links:
+      - { label: Code, href: https://github.com/Swarm-Systems-Lab/paper-affine-formation-control }
+    abstract: >-
+      We propose a method for the collective maneuvering of affine formations in the plane by modifying the original weights of the Laplacian matrix used to achieve static formations of robot swarms. Specifically, the resulting collective motion is characterized as a time-varying affine transformation of a reference configuration, or shape. Unlike the traditional leader-follower strategy, our leaderless scheme allows agents to maintain distinct and possibly time-varying velocities, enabling a broader range of collective motions, including all the linear combinations of translations, rotations, scaling and shearing of a reference shape. Our analysis provides the analytic solution governing the resulting collective motion, explicitly designing the eigenvectors and eigenvalues that define this motion as a function of the modified weights in the new Laplacian matrix. To facilitate a more tractable analysis and design of affine formations in 2D, we propose the use of complex numbers to represent all relevant information. Simulations with up to 20 agents validate the theoretical results.
+  - title: "Dispersion Formation Control: from Geometry to Distribution"
+    authors: "J. Chen, J. Bautista, B. Jayawardhana, HG de Marina"
+    venue: "IEEE Transactions on Automatic Control"
+    year: 2025
+    doi: https://ieeexplore.ieee.org/document/11194724
+    pdf: http://arxiv.org/pdf/2509.19784v1
+    topics: [formation-control]
+    image: images/publications/fc_dispersion.png
+    abstract: >-
+      We introduce and develop the concept of dispersion formation control, bridging a gap between shape-assembly studies in physics and biology and formation control theory. In current formation control studies, the control objectives typically focus on achieving desired local geometric properties, such as inter-agent distances, bearings, or relative positions. In contrast, our dispersion formation control approach enables agents to directly regulate the dispersion of their spatial distribution, a global variable associated with a covariance matrix. Specifically, we introduce the notion of covariance similarity to define the target spatial dispersion of agents. Building on this framework, we propose two control strategies: a centralized approach to illustrate the key ideas, and a distributed approach that enables agents to control the global dispersion but using only local information. Our stability analysis demonstrates that both strategies ensure exponential convergence of the agents' distribution to the desired dispersion. Notably, controlling a global variable rather than multiple local ones enhances the resiliency of the system, particularly against malfunctioning agents. Simulations validate the effectiveness of the proposed dispersion formation control.
+
+# Conference papers
+conference:
+  - title: "Distributed 3D Source Seeking via SO(3) Geometric Control of Robot Swarms"
+    authors: "J. Bautista, HG de Marina"
+    venue: "IFAC World Congress"
+    year: 2026
+    doi: https://doi.org/10.48550/arxiv.2510.06836
+    pdf: https://arxiv.org/pdf/2510.06836
+    topics: [source-seeking, geometric-control]
+    image: images/publications/ss_3d.png
+    links:
+      - { label: Code, href: https://github.com/Swarm-Systems-Lab/source_seeking }
+    abstract: >-
+      This paper presents a geometric control framework on the Lie group SO(3) for 3D source-seeking by robots with first-order attitude dynamics and constant translational speed. By working directly on SO(3), the approach avoids Euler-angle singularities and quaternion ambiguities, providing a unique, intrinsic representation of orientation. We design a proportional feed-forward controller that ensures exponential alignment of each agent to an estimated ascending direction toward a 3D scalar field source. The controller adapts to bounded unknown variations and preserves well-posed swarm formations. Numerical simulations demonstrate the effectiveness of the method, with all code provided open source for reproducibility.
+  - title: "Distributed Oscillatory Guidance for Formation Flight of Fixed-Wing Drones"
+    authors: "Y. Xu, J. Bautista, J. Hinojosa, HG de Marina"
+    venue: "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)"
+    year: 2025
+    doi: https://doi.org/10.1109/iros60139.2025.11246740
+    pdf: https://arxiv.org/pdf/2507.16458
+    topics: [guiding-vector-fields, formation-control, fixed-wing]
+    featured: true
+    image: images/publications/gvfik_osc.png
+    abstract: >-
+      The autonomous formation flight of fixed-wing drones is hard when the coordination requires the actuation over their speeds since they are critically bounded and aircraft are mostly designed to fly at a nominal airspeed. This paper proposes an algorithm to achieve formation flights of fixed-wing drones without requiring any actuation over their speed. In particular, we guide all the drones to travel over specific paths, e.g., parallel straight lines, and we superpose an oscillatory behavior onto the guiding vector field that drives the drones to the paths. This oscillation enables control over the average velocity along the path, thereby facilitating inter-drone coordination. Each drone adjusts its oscillation amplitude distributively in a closed-loop manner by communicating with neighboring agents in an undirected and connected graph. A novel consensus algorithm is introduced, leveraging a non-negative, asymmetric saturation function. This unconventional saturation is justified since negative amplitudes do not make drones travel backward or have a negative velocity along the path. Rigorous theoretical analysis of the algorithm is complemented by validation through numerical simulations and a real-world formation flight.
+  - title: "Inverse Kinematics on Guiding Vector Fields for Robot Path Following"
+    authors: "Y. Zhou, J. Bautista, W. Yao, HG de Marina"
+    venue: "IEEE International Conference on Robotics and Automation (ICRA)"
+    year: 2025
+    doi: https://doi.org/10.1109/icra55743.2025.11127300
+    pdf: https://arxiv.org/pdf/2502.17313
+    topics: [guiding-vector-fields]
+    featured: true
+    image: images/publications/gvfik.png
+    links:
+      - { label: Code, href: https://github.com/Swarm-Systems-Lab/gvf_ik }
+    abstract: >-
+      Inverse kinematics is a fundamental technique for motion and positioning control in robotics, typically applied to end-effectors. In this paper, we extend the concept of inverse kinematics to guiding vector fields for path following in autonomous mobile robots. The desired path is defined by its implicit equation, i.e., by a collection of points belonging to one or more zero-level sets. These level sets serve as a reference to construct an error signal that drives the guiding vector field toward the desired path, enabling the robot to converge and travel along the path by following such a vector field. We start with the formal exposition on how inverse kinematics can be applied to guiding vector fields for single-integrator robots in an m-dimensional Euclidean space. Then, we leverage inverse kinematics to ensure that the level-set error signal behaves as a linear system, facilitating control over the robot's transient motion toward the desired path and allowing for the injection of feed-forward signals to induce precise motion behavior along the path. We then propose solutions to the theoretical and practical challenges of applying this technique to unicycles with constant speeds to follow 2D paths with precise transient control. We finish by validating the predicted theoretical results through real flights with fixed-wing drones.
+  - title: "Resilient source seeking with robot swarms"
+    authors: "A. Acuaviva, J. Bautista, W. Yao, J. Jiménez, HG de Marina"
+    venue: "63rd IEEE Conference on Decision and Control (CDC)"
+    year: 2024
+    doi: https://doi.org/10.1109/cdc56724.2024.10886464
+    pdf: https://arxiv.org/pdf/2309.02937
+    topics: [source-seeking]
+    image: images/publications/ss_cdc.png
+    links:
+      - { label: Code, href: https://github.com/Swarm-Systems-Lab/source_seeking }
+    abstract: >-
+      We present a solution for locating the source, or maximum, of an unknown scalar field using a swarm of mobile robots. Unlike relying on the traditional gradient information, the swarm determines an ascending direction to approach the source with arbitrary precision. The ascending direction is calculated from field strength measurements at the robot locations and their relative positions concerning the swarm centroid. Rather than focusing on individual robots, we focus the analysis on the density of robots per unit area to guarantee a more resilient swarm, i.e., the functionality remains even if individuals go missing or are misplaced during the mission. We reinforce the algorithm's robustness by providing sufficient conditions for the swarm shape so that the ascending direction is almost parallel to the gradient. The swarm can respond to an unexpected environment by morphing its shape and exploiting the existence of multiple ascending directions. Finally, we validate our approach numerically with hundreds of robots. The fact that a large number of robots with a generic formation always calculate an ascending direction compensates for the potential loss of individuals.
+  - title: "Behavioral-based circular formation control for robot swarms"
+    authors: "J. Bautista, HG de Marina"
+    venue: "IEEE International Conference on Robotics and Automation (ICRA)"
+    year: 2024
+    doi: https://doi.org/10.1109/icra57147.2024.10610826
+    pdf: https://arxiv.org/pdf/2309.09101
+    topics: [formation-control]
+    image: images/publications/c3bf_multi.png
+    links:
+      - { label: Code, href: https://github.com/jesusBV20/multi_C3BF }
+    abstract: >-
+      This paper focuses on coordinating a robot swarm orbiting a convex path without collisions among the individuals. The individual robots lack braking capabilities and can only adjust their courses while maintaining their constant but different speeds. Instead of controlling the spatial relations between the robots, our formation control algorithm aims to deploy a dense robot swarm that mimics the behavior of tornado schooling fish. To achieve this objective safely, we employ a combination of a scalable overtaking rule, a guiding vector field, and a control barrier function with an adaptive radius to facilitate smooth overtakes. The decision-making process of the robots is distributed, relying only on local information. Practical applications include defensive structures or escorting missions with the added resiliency of a swarm without a centralized command. We provide a rigorous analysis of the proposed strategy and validate its effectiveness through numerical simulations involving a high density of unicycles.
+
+# Technical notes
+technote:
+  - title: "SO(3) attitude controllers and the alignment of robots with non-constant 3D vector fields"
+    authors: "J. Bautista, HG de Marina"
+    venue: "arXiv"
+    year: 2024
+    doi: https://doi.org/10.48550/arxiv.2406.14998
+    pdf: https://arxiv.org/pdf/2406.14998
+    topics: [geometric-control, guiding-vector-fields]

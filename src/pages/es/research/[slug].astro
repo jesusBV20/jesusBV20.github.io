@@ -1,0 +1,11 @@
+---
+import View from "@/views/ResearchTopic.astro";
+import { entries } from "@/lib/entries";
+
+export async function getStaticPaths() {
+  return (await entries("research", "es")).map((topic) => ({ params: { slug: topic.slug }, props: { topic } }));
+}
+const { topic } = Astro.props;
+---
+
+<View lang="es" topic={topic} />

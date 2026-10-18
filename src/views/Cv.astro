@@ -1,0 +1,158 @@
+---
+import Base from "@/layouts/Base.astro";
+import Icon from "@/components/Icon.astro";
+import Text from "@/components/Text.astro";
+import Publication from "@/components/Publication.astro";
+import { content, label, tr, formatDate, formatRange, type Lang } from "@/lib/content";
+import { asset } from "@/lib/i18n";
+import { pdfName } from "@/lib/cv-files";
+
+/**
+ * The CV as a web page. It reads exactly what tools/build-cv.ts gives
+ * RenderCV, in the order cv.yaml `sections:` sets, so the page and the PDF
+ * always match.
+ */
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { profile, cv, publications, talks } = content();
+const today = new Intl.DateTimeFormat(lang === "es" ? "es-ES" : "en-GB", { dateStyle: "long" }).format(new Date());
+const pubKinds = ["journal", "conference", "preprint", "technote"] as const;
+---
+
+<Base lang={lang} nav="cv" title={label("cv.title", lang)}>
+  <section class="mx-auto max-w-4xl px-4 sm:px-6 pt-14">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-8 border-b border-line">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">{label("cv.title", lang)}</h1>
+        <p class="mt-2 text-muted">{profile.name} · {tr(profile.role, lang)}</p>
+        <p class="mt-1 text-xs text-subtle">{label("cv.updated", lang)} {today}</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a
+          href={asset(`cv/${pdfName(lang)}`)}
+          class="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-bg hover:opacity-90"
+        >
+          <Icon name="download" class="size-4" />
+          {label("cv.download", lang)}
+        </a>
+        <a
+          href={asset(`cv/${pdfName(lang === "en" ? "es" : "en")}`)}
+          class="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-medium hover:border-accent/50 hover:text-accent"
+        >
+          <Icon name="pdf" class="size-4" />
+          PDF ({lang === "en" ? "ES" : "EN"})
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-4xl px-4 sm:px-6">
+    <section class="py-10 border-b border-line grid sm:grid-cols-[11rem_1fr] gap-4">
+      <h2 class="text-xs font-semibold uppercase tracking-[0.14em] text-subtle pt-1">{label("cv.about", lang)}</h2>
+      <Text as="p" text={tr(profile.bio, lang)} class="leading-relaxed text-fg/90" />
+    </section>
+
+    {
+      cv.sections.map((section) => (
+        <section class="py-10 border-b border-line grid sm:grid-cols-[11rem_1fr] gap-4">
+          <h2 class="text-xs font-semibold uppercase tracking-[0.14em] text-subtle pt-1">{label(`cv.${section}`, lang)}</h2>
+          <div class="space-y-8">
+            {section === "education" &&
+              cv.education.map((e) => (
+                <div>
+                  <div class="flex flex-wrap justify-between gap-x-4">
+                    <h3 class="font-semibold">
+                      {tr(e.degree, lang)}, {tr(e.area, lang)}
+                    </h3>
+                    <span class="text-sm text-subtle">{formatRange(e.start, e.end, lang)}</span>
+                  </div>
+                  <p class="text-sm text-muted">
+                    {tr(e.institution, lang)}
+                    {e.location && ` · ${tr(e.location, lang)}`}
+                  </p>
+                  {e.highlights.length > 0 && (
+                    <ul class="mt-2 list-disc pl-5 text-sm text-fg/85 space-y-1">
+                      {e.highlights.map((h) => (
+                        <li><Text text={tr(h, lang)} /></li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            {section === "experience" &&
+              cv.experience.map((e) => (
+                <div>
+                  <div class="flex flex-wrap justify-between gap-x-4">
+                    <h3 class="font-semibold">{tr(e.position, lang)}</h3>
+                    <span class="text-sm text-subtle">{formatRange(e.start, e.end, lang)}</span>
+                  </div>
+                  <p class="text-sm text-muted">
+                    {tr(e.organization, lang)}
+                    {e.location && ` · ${tr(e.location, lang)}`}
+                  </p>
+                  {e.summary && <Text as="p" text={tr(e.summary, lang)} class="mt-1 text-sm text-muted" />}
+                  {e.highlights.length > 0 && (
+                    <ul class="mt-2 list-disc pl-5 text-sm text-fg/85 space-y-1">
+                      {e.highlights.map((h) => (
+                        <li><Text text={tr(h, lang)} /></li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            {section === "publications" &&
+              pubKinds
+                .filter((k) => publications.some((p) => p.kind === k))
+                .map((k) => (
+                  <div>
+                    <h3 class="text-sm font-semibold text-accent mb-4">{label(`cv.${k}`, lang)}</h3>
+                    <div class="space-y-6">
+                      {publications
+                        .filter((p) => p.kind === k)
+                        .map((p) => (
+                          <Publication pub={p} lang={lang} compact />
+                        ))}
+                    </div>
+                  </div>
+                ))}
+            {section === "talks" &&
+              talks.map((t) => (
+                <div class="flex flex-wrap justify-between gap-x-4">
+                  <div>
+                    <p class="font-medium italic">{t.title}</p>
+                    <p class="text-sm text-muted">
+                      {t.event}
+                      {t.location && ` · ${tr(t.location, lang)}`}
+                    </p>
+                  </div>
+                  <span class="text-sm text-subtle">{formatDate(t.date, lang)}</span>
+                </div>
+              ))}
+            {section === "awards" &&
+              cv.awards.map((a) => (
+                <div class="flex flex-wrap justify-between gap-x-4">
+                  <div>
+                    <p class="font-medium">{tr(a.title, lang)}</p>
+                    {a.detail && <Text as="p" text={tr(a.detail, lang)} class="text-sm text-muted" />}
+                  </div>
+                  <span class="text-sm text-subtle">{formatDate(a.date, lang)}</span>
+                </div>
+              ))}
+            {(section === "skills" || section === "languages") && (
+              <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
+                {cv[section].map((s) => (
+                  <>
+                    <dt class="font-medium">{tr(s.label, lang)}</dt>
+                    <dd class="text-muted"><Text text={tr(s.details, lang)} /></dd>
+                  </>
+                ))}
+              </dl>
+            )}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</Base>

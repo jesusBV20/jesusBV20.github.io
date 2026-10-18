@@ -1,0 +1,189 @@
+---
+import "@/styles/global.css";
+import { getImage } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import { content, label, tr, type Lang } from "@/lib/content";
+import { href, otherLang } from "@/lib/i18n";
+import { contentImage } from "@/lib/pictures";
+
+interface Props {
+  lang: Lang;
+  /** Page title; the site name is appended. Omit on the home page. */
+  title?: string;
+  description?: string;
+  /** Which nav item is current. */
+  nav?: "home" | "research" | "publications" | "news" | "cv";
+}
+
+const { lang, title, description, nav } = Astro.props;
+const { profile } = content();
+const fullTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${tr(profile.role, lang)}`;
+const desc = description ?? label("site.description", lang);
+const path = Astro.url.pathname;
+const alternate = otherLang(path, lang);
+const enUrl = new URL(lang === "en" ? path : alternate, Astro.site);
+const esUrl = new URL(lang === "es" ? path : alternate, Astro.site);
+const og = await getImage({ src: contentImage(profile.photo), width: 600, format: "jpg" });
+
+const items = [
+  { key: "home", path: "/" },
+  { key: "research", path: "/research" },
+  { key: "publications", path: "/publications" },
+  { key: "news", path: "/news" },
+  { key: "cv", path: "/cv" },
+] as const;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="es" href={esUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={new URL(og.src, Astro.site)} />
+    <meta property="og:locale" content={lang === "en" ? "en_GB" : "es_ES"} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <link rel="sitemap" href={`${import.meta.env.BASE_URL}sitemap-index.xml`} />
+    <script is:inline>
+      // Apply a saved theme before first paint. Storage can be unavailable
+      // (private windows, blocked site data); then the system theme applies.
+      try {
+        const t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body class="min-h-dvh flex flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 bg-bg px-3 py-2 rounded"
+      >Skip to content</a
+    >
+    <header class="sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-md">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 h-14 flex items-center gap-4">
+        <a href={href(lang, "/")} class="font-semibold tracking-tight text-[15px] whitespace-nowrap">
+          {profile.name}
+        </a>
+        <nav class="ml-auto hidden md:flex items-center gap-1 text-sm" aria-label="Main">
+          {
+            items.slice(1).map((i) => (
+              <a
+                href={href(lang, i.path)}
+                class:list={[
+                  "px-3 py-1.5 rounded-md transition-colors",
+                  nav === i.key ? "text-fg bg-surface font-medium" : "text-muted hover:text-fg",
+                ]}
+                aria-current={nav === i.key ? "page" : undefined}
+              >
+                {label(`nav.${i.key}`, lang)}
+              </a>
+            ))
+          }
+        </nav>
+        <div class="ml-auto md:ml-2 flex items-center gap-1">
+          <a
+            href={alternate}
+            hreflang={lang === "en" ? "es" : "en"}
+            class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm text-muted hover:text-fg"
+            title={label("lang.switch", lang)}
+          >
+            <Icon name="globe" class="size-4" />
+            <span>{lang === "en" ? "ES" : "EN"}</span>
+          </a>
+          <button
+            id="theme-toggle"
+            type="button"
+            class="p-2 rounded-md text-muted hover:text-fg"
+            aria-label={label("theme.toggle", lang)}
+            title={label("theme.toggle", lang)}
+          >
+            <Icon name="moon" class="size-4 dark-hidden" />
+            <Icon name="sun" class="size-4 light-hidden" />
+          </button>
+          <details class="md:hidden relative">
+            <summary class="list-none p-2 rounded-md text-muted hover:text-fg cursor-pointer" aria-label="Menu">
+              <Icon name="menu" class="size-5" />
+            </summary>
+            <nav class="absolute right-0 mt-2 w-48 rounded-xl border border-line bg-bg shadow-lg p-2 flex flex-col text-sm">
+              {
+                items.map((i) => (
+                  <a
+                    href={href(lang, i.path)}
+                    class:list={["px-3 py-2 rounded-md", nav === i.key ? "bg-surface font-medium" : "text-muted"]}
+                  >
+                    {label(`nav.${i.key}`, lang)}
+                  </a>
+                ))
+              }
+            </nav>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="border-t border-line mt-24">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 py-10 flex flex-col sm:flex-row gap-6 sm:items-center justify-between text-sm text-muted">
+        <div>
+          <p class="text-fg font-medium">{profile.name}</p>
+          <p>{tr(profile.affiliation, lang)}</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href={`mailto:${profile.email}`} class="hover:text-fg" title={profile.email}>
+            <Icon name="mail" class="size-5" title={profile.email} />
+          </a>
+          {
+            profile.links.map((l) => (
+              <a href={l.href} class="hover:text-fg" rel="me noopener" title={l.network}>
+                <Icon name={l.network} class="size-5" title={l.network} />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+      <p class="mx-auto max-w-5xl px-4 sm:px-6 pb-8 text-xs text-subtle">{label("footer.built", lang)}</p>
+    </footer>
+
+    <style is:global>
+      /* Moon when the page is light, sun when it is dark. */
+      html[data-theme="dark"] .dark-hidden {
+        display: none;
+      }
+      html:not([data-theme="dark"]) .light-hidden {
+        display: none;
+      }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme]) .dark-hidden {
+          display: none;
+        }
+        html:not([data-theme]) .light-hidden {
+          display: inline;
+        }
+      }
+    </style>
+    <script>
+      const button = document.getElementById("theme-toggle");
+      button?.addEventListener("click", () => {
+        const root = document.documentElement;
+        const dark =
+          root.dataset.theme === "dark" ||
+          (!root.dataset.theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        const next = dark ? "light" : "dark";
+        root.dataset.theme = next;
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+---
+import Base from "@/layouts/Base.astro";
+import { label, type Lang } from "@/lib/content";
+import { href } from "@/lib/i18n";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<Base lang={lang} title={label("notFound.title", lang)}>
+  <section class="mx-auto max-w-3xl px-4 sm:px-6 py-28 text-center">
+    <p class="text-sm font-medium text-accent">404</p>
+    <h1 class="mt-2 text-3xl font-semibold tracking-tight">{label("notFound.title", lang)}</h1>
+    <p class="mt-3 text-muted">
+      <a class="text-accent underline underline-offset-4" href={href(lang, "/")}>{label("notFound.text", lang)}</a>
+    </p>
+  </section>
+</Base>

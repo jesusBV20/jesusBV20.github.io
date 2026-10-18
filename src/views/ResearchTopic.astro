@@ -1,0 +1,70 @@
+---
+import { Image } from "astro:assets";
+import { render } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Icon from "@/components/Icon.astro";
+import Publication from "@/components/Publication.astro";
+import YouTube from "@/components/YouTube.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+import { content, label, type Lang } from "@/lib/content";
+import { href } from "@/lib/i18n";
+import type { entries } from "@/lib/entries";
+
+type Topic = Awaited<ReturnType<typeof entries<"research">>>[number];
+interface Props {
+  lang: Lang;
+  topic: Topic;
+}
+const { lang, topic } = Astro.props;
+const { Content } = await render(topic.entry);
+const papers = content().publications.filter((p) => p.topics.includes(topic.slug));
+const [cover, ...gallery] = topic.pictures;
+---
+
+<Base lang={lang} nav="research" title={topic.data.title} description={topic.data.summary}>
+  <article class="mx-auto max-w-3xl px-4 sm:px-6 pt-10">
+    <a href={href(lang, "/research")} class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-accent">
+      <Icon name="back" class="size-3.5" />
+      {label("research.back", lang)}
+    </a>
+    <h1 class="mt-6 text-3xl sm:text-4xl font-semibold tracking-tight">{topic.data.title}</h1>
+    <p class="mt-3 text-lg text-muted leading-relaxed">{topic.data.summary}</p>
+    {cover && <Image src={cover} alt="" width={1200} class="mt-8 w-full rounded-2xl border border-line bg-surface" />}
+    <div class="prose rich mt-8"><Content /></div>
+    {
+      gallery.length > 0 && (
+        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+          {gallery.map((g) => (
+            <Image src={g} alt="" width={800} class="w-full rounded-xl border border-line" />
+          ))}
+        </div>
+      )
+    }
+  </article>
+
+  {
+    topic.data.videos.length > 0 && (
+      <section class="mx-auto max-w-3xl px-4 sm:px-6 mt-14">
+        <SectionTitle title={label("research.videos", lang)} />
+        <div class="grid gap-4 sm:grid-cols-2">
+          {topic.data.videos.map((id) => (
+            <YouTube id={id} title={topic.data.title} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    papers.length > 0 && (
+      <section class="mx-auto max-w-3xl px-4 sm:px-6 mt-14">
+        <SectionTitle title={label("research.papers", lang)} />
+        <div class="space-y-8">
+          {papers.map((p) => (
+            <Publication pub={p} lang={lang} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</Base>

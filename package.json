@@ -1,0 +1,31 @@
+{
+  "name": "jesus-bautista-villar-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "cv": "bun tools/build-cv.ts",
+    "build": "bun tools/build-cv.ts && astro build",
+    "build:site": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "publications:enrich": "bun tools/enrich-publications.ts"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "astro": "^5.16.0",
+    "sharp": "^0.34.4",
+    "yaml": "^2.9.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/vite": "^4.2.1",
+    "prettier": "^3.7.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,61 @@
+# Who you are. Every page header, the footer and the top of the CV read this file.
+#
+# Text can be a plain string (same in every language) or a pair:
+#   role: { en: "PhD Candidate", es: "Doctorando" }
+# English is required; Spanish is optional and falls back to English
+# (the build lists everything still missing a translation).
+# Inline Markdown works in text: **bold**, *italic*, [link](https://…).
+
+name: "Jesús Bautista Villar"
+# How your name appears in author lists, so it can be highlighted.
+# Every spelling used in publications.yaml must be listed here.
+authorNames: ["J. Bautista", "Jesús Bautista", "Jesus Bautista", "J. Bautista Villar"]
+
+role:
+  en: "PhD Candidate"
+  es: "Doctorando"
+affiliation:
+  en: "Swarm Systems Lab · Institute of Mathematics (IMAG), University of Granada"
+  es: "Swarm Systems Lab · Instituto de Matemáticas (IMAG), Universidad de Granada"
+location:
+  en: "Granada, Spain"
+  es: "Granada, España"
+email: "jesusbv@ugr.es"
+photo: images/profile.png        # relative to content/
+
+# Shown on the front page and at the top of the CV.
+bio:
+  en: >-
+    I am a PhD candidate in Information and Communication Technologies,
+    specializing in Cognitive Systems and Robotics, at the University of Granada,
+    and a predoctoral researcher at the [Swarm Systems Lab](https://www.swarmsystemslab.eu).
+    My research focuses on the control of autonomous robot swarms: I combine control
+    theory, geometric methods and physical principles to develop distributed
+    Guidance, Navigation and Control (GNC) algorithms for multi-robot systems, with
+    an emphasis on distributed, resilient and experimentally validated solutions.
+  es: >-
+    Soy doctorando en Tecnologías de la Información y la Comunicación, en la
+    especialidad de Sistemas Cognitivos y Robótica, en la Universidad de Granada,
+    e investigador predoctoral en el [Swarm Systems Lab](https://www.swarmsystemslab.eu).
+    Mi investigación se centra en el control de enjambres de robots autónomos: combino
+    teoría de control, métodos geométricos y principios físicos para desarrollar
+    algoritmos distribuidos de Guiado, Navegación y Control (GNC) para sistemas
+    multi-robot, con énfasis en soluciones distribuidas, resilientes y validadas
+    experimentalmente.
+
+# Research interests, shown as tags on the front page.
+interests:
+  - { en: "Robot swarms", es: "Enjambres de robots" }
+  - { en: "Guiding vector fields", es: "Campos vectoriales de guiado" }
+  - { en: "Formation control", es: "Control de formaciones" }
+  - { en: "Source seeking", es: "Búsqueda de fuentes" }
+  - { en: "Geometric control on SO(3)", es: "Control geométrico en SO(3)" }
+  - { en: "Autonomous fixed-wing aircraft", es: "Aviones autónomos de ala fija" }
+
+# Profiles. `network` picks the icon and the CV label:
+# GitHub, Google Scholar, ORCID, LinkedIn, ResearchGate, X, Mastodon, Bluesky, YouTube.
+links:
+  - { network: ORCID, id: "0009-0006-0080-545X", href: "https://orcid.org/0009-0006-0080-545X" }
+  - { network: Google Scholar, id: "1sjaAScAAAAJ", href: "https://scholar.google.com/citations?user=1sjaAScAAAAJ" }
+  - { network: GitHub, id: "jesusBV20", href: "https://github.com/jesusBV20" }
+  - { network: LinkedIn, id: "jesus-bautista-villar-27b037290", href: "https://www.linkedin.com/in/jesus-bautista-villar-27b037290" }

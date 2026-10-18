@@ -1,0 +1,59 @@
+name: Deploy website
+
+# Every push to main rebuilds the CV PDFs (RenderCV) and the site (Astro) from
+# content/, then publishes to GitHub Pages. Editing a YAML or dropping a folder
+# into content/ is all an update takes.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # RenderCV runs through uvx (see tools/build-cv.ts), which fetches the
+      # pinned Python and RenderCV; the cache keeps that to a few seconds.
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: tools/build-cv.ts
+
+      - run: bun install --frozen-lockfile
+
+      - name: Build CV and site
+        run: bun run build
+        env:
+          # Set these repository variables (Settings → Secrets and variables →
+          # Actions → Variables) only to publish somewhere else, e.g. a custom domain.
+          SITE_URL: ${{ vars.SITE_URL || 'https://jesusbv20.github.io' }}
+          BASE_PATH: ${{ vars.BASE_PATH || '/' }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

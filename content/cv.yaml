@@ -1,0 +1,101 @@
+# The CV. The /cv page and the PDF (both languages) are generated from this
+# file, profile.yaml, publications.yaml and talks.yaml on every build.
+#
+# Text is a plain string or { en: …, es: … } (Spanish falls back to English).
+# Dates are YYYY or YYYY-MM; `end: present` for something ongoing.
+# Inline Markdown works: **bold**, *italic*, [link](https://…).
+
+# Which sections the CV shows, and in which order. Remove a line to drop a
+# section from both the web page and the PDF.
+#   education · experience · publications · talks · awards · skills · languages
+sections: [education, experience, publications]
+
+# The PDF look. One of RenderCV's themes:
+#   classic · ember · engineeringclassic · engineeringresumes · harvard · ink
+#   moderncv · opal · sb2nov
+theme: classic
+
+education:
+  - degree: { en: "PhD", es: "Doctorado" }
+    area:
+      en: "Information and Communication Technologies"
+      es: "Tecnologías de la Información y la Comunicación"
+    institution: { en: "University of Granada", es: "Universidad de Granada" }
+    location: { en: "Granada, Spain", es: "Granada, España" }
+    start: 2023
+    end: present
+    highlights:
+      - en: "Specialization: Cognitive Systems and Robotics."
+        es: "Especialidad: Sistemas Cognitivos y Robótica."
+      - en: "Research focus: distributed control, robot swarms, autonomous aerial systems, guiding vector fields, formation control and geometric control."
+        es: "Líneas de investigación: control distribuido, enjambres de robots, sistemas aéreos autónomos, campos vectoriales de guiado, control de formaciones y control geométrico."
+
+  - degree: { en: "MSc", es: "Máster" }
+    area:
+      en: "Data Science and Computer Engineering"
+      es: "Ciencia de Datos e Ingeniería de Computadores"
+    institution: { en: "University of Granada", es: "Universidad de Granada" }
+    location: { en: "Granada, Spain", es: "Granada, España" }
+    end: 2023
+
+  - degree: { en: "BSc", es: "Grado" }
+    area: { en: "Physics", es: "Física" }
+    institution: { en: "Complutense University of Madrid", es: "Universidad Complutense de Madrid" }
+    location: { en: "Madrid, Spain", es: "Madrid, España" }
+    end: 2022
+
+experience:
+  - position: { en: "Predoctoral Researcher", es: "Investigador predoctoral" }
+    organization:
+      en: "Swarm Systems Lab, Institute of Mathematics of Granada (IMAG), University of Granada"
+      es: "Swarm Systems Lab, Instituto de Matemáticas de la Universidad de Granada (IMAG)"
+    location: { en: "Granada, Spain", es: "Granada, España" }
+    start: 2022-12
+    end: present
+    highlights:
+      - en: "Development of distributed Guidance, Navigation and Control (GNC) algorithms for autonomous robot swarms, with particular emphasis on formation control, source seeking and cooperative motion."
+        es: "Desarrollo de algoritmos distribuidos de Guiado, Navegación y Control (GNC) para enjambres de robots autónomos, con especial énfasis en control de formaciones, búsqueda de fuentes y movimiento cooperativo."
+      - en: "Development and implementation of geometric control and guiding vector field algorithms for autonomous aerial vehicles, including fixed-wing aircraft."
+        es: "Desarrollo e implementación de algoritmos de control geométrico y de campos vectoriales de guiado para vehículos aéreos autónomos, incluidos aviones de ala fija."
+      - en: "Assembly, integration, maintenance and experimental validation of autonomous radio-controlled robot swarms involving both aerial and ground vehicles."
+        es: "Montaje, integración, mantenimiento y validación experimental de enjambres de robots autónomos radiocontrolados, tanto aéreos como terrestres."
+      - en: "Development of mathematical models and simulation tools to analyze the physical behavior and collective dynamics of autonomous vehicles and multi-robot systems."
+        es: "Desarrollo de modelos matemáticos y herramientas de simulación para analizar el comportamiento físico y la dinámica colectiva de vehículos autónomos y sistemas multi-robot."
+      - en: "Implementation and experimental validation of onboard autonomy algorithms on real fixed-wing drones, including formation flight, crosswind navigation and autonomous maneuvering."
+        es: "Implementación y validación experimental de algoritmos de autonomía a bordo en drones de ala fija reales, incluidos vuelo en formación, navegación con viento cruzado y maniobras autónomas."
+      - en: "Development of open-source software and reproducible simulation tools supporting research in distributed robot-swarm control."
+        es: "Desarrollo de software libre y herramientas de simulación reproducibles para la investigación en control distribuido de enjambres de robots."
+      - en: "Research supported by the *ERC Starting Grant* iSwarm (101076091) and the *Ramón y Cajal* grant RYC2020-030090-I of the Spanish Ministry of Science."
+        es: "Investigación financiada por la *ERC Starting Grant* iSwarm (101076091) y la ayuda *Ramón y Cajal* RYC2020-030090-I del Ministerio de Ciencia."
+
+  - position: { en: "Research Intern", es: "Becario de colaboración" }
+    organization:
+      en: "Department of Computer Architecture and Automation, Complutense University of Madrid"
+      es: "Departamento de Arquitectura de Computadores y Automática, Universidad Complutense de Madrid"
+    location: { en: "Madrid, Spain", es: "Madrid, España" }
+    start: 2021-09
+    end: 2022-06
+    summary:
+      en: "*Collaboration grant* from the Spanish Ministry of Education and Professional Training."
+      es: "*Beca de colaboración* del Ministerio de Educación y Formación Profesional."
+    highlights:
+      - en: "Contributions to [Paparazzi UAS](https://github.com/paparazzi/paparazzi), an open-source hardware/software project for autonomous aerial vehicles."
+        es: "Contribuciones a [Paparazzi UAS](https://github.com/paparazzi/paparazzi), un proyecto de hardware y software libre para vehículos aéreos autónomos."
+      - en: "Maintenance and development of ground radio-controlled autonomous vehicles."
+        es: "Mantenimiento y desarrollo de vehículos terrestres autónomos radiocontrolados."
+      - en: "Development of drivers and embedded software for systems based on STM32 microcontrollers."
+        es: "Desarrollo de drivers y software embebido para sistemas basados en microcontroladores STM32."
+
+# Optional sections - add them to `sections:` above to show them.
+awards: []
+#  - title: { en: "…", es: "…" }
+#    date: 2026
+#    detail: { en: "…", es: "…" }
+
+skills: []
+#  - label: { en: "Programming", es: "Programación" }
+#    details: "Python, C/C++, MATLAB, ROS"
+
+languages: []
+#  - label: { en: "Spanish", es: "Español" }
+#    details: { en: "Native", es: "Nativo" }

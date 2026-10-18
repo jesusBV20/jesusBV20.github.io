@@ -1,0 +1,105 @@
+---
+import Base from "@/layouts/Base.astro";
+import Text from "@/components/Text.astro";
+import Publication from "@/components/Publication.astro";
+import { content, label, type Lang, type PubKind } from "@/lib/content";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { publications } = content();
+
+/** Under review first, then published work by year, then technical notes. */
+const review = publications.filter((p) => p.kind === "preprint");
+const published = publications.filter((p) => p.kind === "journal" || p.kind === "conference");
+const notes = publications.filter((p) => p.kind === "technote");
+const years = [...new Set(published.map((p) => p.year))].sort((a, b) => b - a);
+
+const kinds = (["preprint", "journal", "conference", "technote"] as PubKind[]).filter((k) =>
+  publications.some((p) => p.kind === k),
+);
+const groups = [
+  ...(review.length ? [{ title: label("pubs.preprint", lang), items: review }] : []),
+  ...years.map((y) => ({ title: String(y), items: published.filter((p) => p.year === y) })),
+  ...(notes.length ? [{ title: label("pubs.technote", lang), items: notes }] : []),
+];
+---
+
+<Base lang={lang} nav="publications" title={label("pubs.title", lang)}>
+  <section class="mx-auto max-w-4xl px-4 sm:px-6 pt-14 pb-4">
+    <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">{label("pubs.title", lang)}</h1>
+    <Text as="p" text={label("pubs.intro", lang)} class="mt-3 text-muted" />
+    <div class="mt-8 flex flex-wrap gap-2" role="toolbar" aria-label="Filter">
+      <button type="button" data-filter="all" aria-pressed="true" class="filter">
+        {label("pubs.all", lang)} <span class="count">{publications.length}</span>
+      </button>
+      {
+        kinds.map((k) => (
+          <button type="button" data-filter={k} aria-pressed="false" class="filter">
+            {label(`pubs.${k}`, lang)} <span class="count">{publications.filter((p) => p.kind === k).length}</span>
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-4 sm:px-6">
+    {
+      groups.map((g) => (
+        <div class="group-block pt-10" data-group>
+          <h2 class="text-xs font-semibold uppercase tracking-[0.14em] text-subtle mb-6 pb-2 border-b border-line">{g.title}</h2>
+          <div class="space-y-9">
+            {g.items.map((p) => (
+              <div data-kind={p.kind}>
+                <Publication pub={p} lang={lang} />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
+  <style>
+    .filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .filter:hover {
+      color: var(--foreground);
+    }
+    .filter[aria-pressed="true"] {
+      background: var(--accent-soft);
+      border-color: transparent;
+      color: var(--accent);
+      font-weight: 550;
+    }
+    .count {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+  </style>
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        const kind = button.dataset.filter;
+        for (const b of buttons) b.setAttribute("aria-pressed", String(b === button));
+        for (const item of document.querySelectorAll<HTMLElement>("[data-kind]")) {
+          item.hidden = kind !== "all" && item.dataset.kind !== kind;
+        }
+        for (const group of document.querySelectorAll<HTMLElement>("[data-group]")) {
+          group.hidden = !group.querySelector("[data-kind]:not([hidden])");
+        }
+      });
+    }
+  </script>
+</Base>

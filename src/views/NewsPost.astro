@@ -1,0 +1,60 @@
+---
+import { Image } from "astro:assets";
+import { render } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Icon from "@/components/Icon.astro";
+import YouTube from "@/components/YouTube.astro";
+import { label, type Lang } from "@/lib/content";
+import { href } from "@/lib/i18n";
+import { excerpt } from "@/lib/excerpt";
+import type { entries } from "@/lib/entries";
+
+type Post = Awaited<ReturnType<typeof entries<"news">>>[number];
+interface Props {
+  lang: Lang;
+  post: Post;
+}
+const { lang, post } = Astro.props;
+const { Content } = await render(post.entry);
+const [cover, ...gallery] = post.pictures;
+const dateFmt = new Intl.DateTimeFormat(lang === "es" ? "es-ES" : "en-GB", { dateStyle: "long", timeZone: "UTC" });
+---
+
+<Base lang={lang} nav="news" title={post.data.title} description={post.data.summary ?? excerpt(post.entry.body ?? "", 160)}>
+  <article class="mx-auto max-w-3xl px-4 sm:px-6 pt-10">
+    <a href={href(lang, "/news")} class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-accent">
+      <Icon name="back" class="size-3.5" />
+      {label("news.back", lang)}
+    </a>
+    <time class="mt-8 block text-sm text-subtle" datetime={post.data.date.toISOString()}>{dateFmt.format(post.data.date)}</time>
+    <h1 class="mt-1 text-3xl sm:text-4xl font-semibold tracking-tight leading-tight">{post.data.title}</h1>
+    {
+      !post.translated && label("news.onlyEnglish", lang) && (
+        <p class="mt-4 inline-flex items-center gap-2 rounded-lg bg-surface border border-line px-3 py-1.5 text-sm text-muted">
+          <Icon name="globe" class="size-4" />
+          {label("news.onlyEnglish", lang)}
+        </p>
+      )
+    }
+    {cover && <Image src={cover} alt="" width={1200} class="mt-8 w-full rounded-2xl border border-line" />}
+    <div class="prose rich mt-8" lang={post.translated ? lang : "en"}><Content /></div>
+    {
+      post.data.videos.length > 0 && (
+        <div class="mt-10 grid gap-4">
+          {post.data.videos.map((id) => (
+            <YouTube id={id} title={post.data.title} />
+          ))}
+        </div>
+      )
+    }
+    {
+      gallery.length > 0 && (
+        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+          {gallery.map((g) => (
+            <Image src={g} alt="" width={800} class="w-full rounded-xl border border-line" />
+          ))}
+        </div>
+      )
+    }
+  </article>
+</Base>

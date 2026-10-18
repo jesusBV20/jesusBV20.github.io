@@ -1,0 +1,43 @@
+---
+/**
+ * A YouTube video that loads nothing from Google until it is clicked: the
+ * still comes from i.ytimg.com, the player from youtube-nocookie.com.
+ */
+import Icon from "./Icon.astro";
+interface Props {
+  id: string;
+  title?: string;
+}
+const { id, title = "Video" } = Astro.props;
+---
+
+<div class="yt relative aspect-video overflow-hidden rounded-xl border border-line bg-black" data-id={id} data-title={title}>
+  <button type="button" class="absolute inset-0 w-full h-full group" aria-label={`Play: ${title}`}>
+    <img
+      src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+    />
+    <span class="absolute inset-0 grid place-items-center">
+      <span class="grid place-items-center size-14 rounded-full bg-black/60 text-white group-hover:bg-accent transition-colors">
+        <Icon name="play" class="size-6 translate-x-0.5" />
+      </span>
+    </span>
+  </button>
+</div>
+
+<script>
+  for (const el of document.querySelectorAll<HTMLElement>(".yt")) {
+    el.querySelector("button")?.addEventListener("click", () => {
+      const frame = document.createElement("iframe");
+      frame.src = `https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&rel=0`;
+      frame.title = el.dataset.title ?? "Video";
+      frame.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen";
+      frame.allowFullscreen = true;
+      frame.className = "absolute inset-0 w-full h-full";
+      el.replaceChildren(frame);
+    });
+  }
+</script>

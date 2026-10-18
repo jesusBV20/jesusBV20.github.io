@@ -1,0 +1,13 @@
+---
+import View from "@/views/NewsPost.astro";
+import { entries } from "@/lib/entries";
+
+export async function getStaticPaths() {
+  return (await entries("news", "es"))
+    .filter((post) => !post.data.draft)
+    .map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+const { post } = Astro.props;
+---
+
+<View lang="es" post={post} />

@@ -1,0 +1,41 @@
+# Talks, posters and presentations - newest first.
+# Shown on the front page timeline; add `talks` to `sections:` in cv.yaml to
+# put them in the CV too.
+#
+#   - title: "Title of the talk or paper presented"
+#     event: "IEEE International Conference on Robotics and Automation (ICRA)"
+#     location: { en: "Atlanta, USA", es: "Atlanta, EE. UU." }
+#     date: 2025-05
+#     kind: talk            # talk · poster · invited · outreach
+#     links:
+#       - { label: Slides, href: https://… }
+
+- title: "Inverse Kinematics on Guiding Vector Fields for Robot Path Following"
+  event: "IEEE International Conference on Robotics and Automation (ICRA)"
+  location: { en: "Atlanta, USA", es: "Atlanta, EE. UU." }
+  date: 2025-05
+  kind: talk
+
+- title: "Resilient source seeking with robot swarms"
+  event: "IEEE Conference on Decision and Control (CDC)"
+  location: { en: "Milan, Italy", es: "Milán, Italia" }
+  date: 2024-12
+  kind: talk
+
+- title: "Behavioral-based circular formation control for robot swarms"
+  event: "CITIC Coffee, University of Granada"
+  location: { en: "Granada, Spain", es: "Granada, España" }
+  date: 2024-06
+  kind: talk
+
+- title: "Behavioral-based circular formation control for robot swarms"
+  event: "IEEE International Conference on Robotics and Automation (ICRA)"
+  location: { en: "Yokohama, Japan", es: "Yokohama, Japón" }
+  date: 2024-05
+  kind: talk
+
+- title: "Resilient source seeking with robot swarms"
+  event: "CITIC Coffee, University of Granada"
+  location: { en: "Granada, Spain", es: "Granada, España" }
+  date: 2023-05
+  kind: poster

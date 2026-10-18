@@ -1,0 +1,12 @@
+---
+/** Text from YAML with inline Markdown ([link](…), **bold**, *italic*). */
+import { inline } from "@/lib/markdown";
+interface Props {
+  text: string;
+  as?: "span" | "p" | "div";
+  class?: string;
+}
+const { text, as: Tag = "span", class: cls } = Astro.props;
+---
+
+<Tag class:list={["rich", cls]} set:html={inline(text)} />
